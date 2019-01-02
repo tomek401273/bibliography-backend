@@ -14,6 +14,8 @@ public class ReadFactory {
     public ReadFactory() {
         this.avaiableReader = new HashMap<>();
         avaiableReader.put("txt", new ReadFileServiceTxt());
+        avaiableReader.put("doc", new ReadFileServiceDoc());
+        avaiableReader.put("docx", new ReadFileServiceDocx());
     }
 
     public ReadFileService createReadFileService(String extension) throws BibliographyException{
