@@ -21,7 +21,7 @@ public class UploadController {
         try {
             checkFileService.readFile(multipartFile);
         } catch (IOException e) {
-            return new UploadStatus(false, "File Upload fail", e.getMessage());
+//            return new UploadStatus(false, "File Upload fail", e.getMessage());
         }
         return new UploadStatus(true, "File upload success");
     }

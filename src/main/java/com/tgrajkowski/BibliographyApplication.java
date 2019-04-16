@@ -2,11 +2,11 @@ package com.tgrajkowski;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-import java.io.IOException;
-
+//import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+@EnableDiscoveryClient
+//@EnableResourceServer
 @SpringBootApplication
 public class BibliographyApplication {
     public static void main(String[] args) {
