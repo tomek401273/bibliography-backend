@@ -37,4 +37,19 @@ public class UserMapper {
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), userRoleList);
         return userDetails;
     }
+
+    public Users mapToUserPasswordEncode(UserDto userDto) {
+        Users users = new Users();
+        String passwordEncoded = bCryptPasswordEncoder.encode(userDto.getPassword());
+        users.setPassword(passwordEncoded);
+        users.setLogin(userDto.getLogin());
+        return users;
+
+    }
+
+    public Users mapToUserWithoutPassword(UserDto userDto, Users users) {
+        users.setLogin(userDto.getLogin());
+        return users;
+    }
+
 }

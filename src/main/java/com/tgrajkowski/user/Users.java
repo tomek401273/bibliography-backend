@@ -24,6 +24,12 @@ public class Users {
     @Column
     private String password;
 
+    @Column
+    private boolean confirm;
+
+    @Column
+    private String codeConfirm;
+
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
