@@ -14,6 +14,6 @@ public class TestEmailSuite {
     public NewsletterService newsletterService;
     @Test
     public void test1() {
-        newsletterService.sendEmailConfirmSubscription("tomek371240@gmail.com", "tomek", "logiclogic");
+//        newsletterService.sendEmailConfirmSubscription("tomek371240@gmail.com", "tomek", "logiclogic");
     }
 }

@@ -18,6 +18,7 @@ public class UploadController {
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public UploadStatus uploadFile(@RequestParam("file")MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws Exception {
+        System.out.println(multipartFile.getOriginalFilename());
         try {
             checkFileService.readFile(multipartFile);
         } catch (IOException e) {

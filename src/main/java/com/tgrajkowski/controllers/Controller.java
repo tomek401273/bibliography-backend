@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 @RestController
 @CrossOrigin(origins = "*")
 public class Controller {
@@ -20,7 +24,8 @@ public class Controller {
 //            files.add(file.getOriginalFilename());
 
             byte [] byteArr=file.getBytes();
-//			InputStream inputStream = new ByteArrayInputStream(byteArr);
+			InputStream inputStream = new ByteArrayInputStream(byteArr);
+
 
             message = "You successfully uploaded " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.OK).body(message);

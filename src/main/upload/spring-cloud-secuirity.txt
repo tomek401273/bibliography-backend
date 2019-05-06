@@ -1,0 +1,7 @@
+beadelund
+/home/tomek/Documents/beadelund/tutorials/spring-cloud/spring-cloud-security/
+stanalone
+woring on java 8
+it is only spring security
+reroutes all request on auth server
+I can't use it to connect exchange app with eureka because it reroutes me on auth 
