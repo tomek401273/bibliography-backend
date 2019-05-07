@@ -6,9 +6,7 @@ import com.tgrajkowski.model.authors.Publication;
 import com.tgrajkowski.model.authors.PublicationCreator;
 import com.tgrajkowski.model.file.formats.FileFormats;
 import com.tgrajkowski.service.DivideFileService;
-import com.tgrajkowski.service.file.read.ReadFactory;
-import com.tgrajkowski.service.file.read.ReadFileService;
-import com.tgrajkowski.service.file.read.ReadFileServiceTxt;
+import com.tgrajkowski.service.file.read.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +28,15 @@ public class CheckFileService {
     @Autowired
     private DivideFileService divideFileService;
 
+    @Autowired
+    private PublicationCitationService publicationCitationService;
+
+    @Autowired
+    private BibilographyCitationService bibilographyCitationService;
+
     public void readFile(MultipartFile multipartFile) throws IOException, BibliographyException {
         String temp = "/home/tomek/Documents/samples2/bibliography-backend/src/main/upload/" + multipartFile.getOriginalFilename();
+        long start = System.currentTimeMillis();
         try (InputStream inputStream = multipartFile.getInputStream()) {
 
             Files.copy(inputStream, Paths.get(temp), StandardCopyOption.REPLACE_EXISTING);
@@ -41,48 +46,36 @@ public class CheckFileService {
 
             ReadFileService readFileService = readFactory.createReadFileService(fileExtension);
             List<String> lines = readFileService.readFile(multipartFile);
-            lines.forEach(System.out::println);
 
 
-            long start = System.currentTimeMillis();
 
             List<String> publicationLines = divideFileService.getBibiographyLines(lines);
-//
-//
-            PublicationCreator publicationCreator = new PublicationCreator();
-            Set<Publication> publications = publicationCreator.createPublications(publicationLines);
-//
-            System.out.println("cumberOfPublication: "+publications.size());
-//
-
             List<String> mgrLines = divideFileService.getDiplomaLines(lines);
 
+//            Thread thread1 = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+            bibilographyCitationService.validate(mgrLines, publicationLines);
 
 
-            String allMgr = "";
-            for (String line: mgrLines) {
-                allMgr = allMgr+" "+line;
-            }
-            System.out.println("countLetters:"+allMgr.length());
-            int countNotUsedPublication = 0;
-            for (Publication publication: publications) {
-                if (allMgr.contains(publication.getAuthorName())) {
-                } else {
-                    System.out.println(publication.toString());
-                    countNotUsedPublication++;
-                }
-            }
 
-            System.out.println("countNotUsedPublication: "+ countNotUsedPublication);
-            long end = System.currentTimeMillis();
-            long calculationTime = end - start;
-            System.out.println("calculationTime: "+calculationTime+" [ms]");
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println("-----------------------------------------------------------------------");
+            publicationCitationService.Validate(mgrLines, publicationLines);
 
         } catch (IOException e) {
 
             e.printStackTrace();
             throw new IOException(e);
         }
+        long end = System.currentTimeMillis();
+        long calculationTime = end - start;
+        System.out.println("calculationTime: "+calculationTime+" [ms]");
     }
 
     public String getFileExtension(String fullFileName) throws BibliographyException {

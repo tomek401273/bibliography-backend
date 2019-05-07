@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class ReadFileServiceDocx implements ReadFileService{
     @Override
     public List<String> readFile(MultipartFile multipartFile) throws BibliographyException {
+        System.out.println("docxxx files");
         try (InputStream inputStream = multipartFile.getInputStream()){
             XWPFDocument document = new XWPFDocument(inputStream);
             return document.getParagraphs().stream().map(x->x.getText()).collect(Collectors.toList());
@@ -22,3 +23,4 @@ public class ReadFileServiceDocx implements ReadFileService{
         }
     }
 }
+// buttons main-page order-bibloiograpy report-bug support remarks opinion-reviev  invite a friend
