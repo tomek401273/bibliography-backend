@@ -1,7 +1,9 @@
 package com.tgrajkowski.service.file.read;
 
+import com.tgrajkowski.model.PublicationAndDupl;
 import com.tgrajkowski.model.authors.Publication;
 import com.tgrajkowski.model.authors.PublicationCreator;
+import com.tgrajkowski.model.authors.PublicationReturn;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,8 +15,8 @@ public class PublicationCitationService {
     private static List<String> citations = new ArrayList<>();
     private static List<String> singleCit = new ArrayList<>();
 
-    public void Validate(List<String> mgrLines, List<String> publicationLines ) {
-
+    public PublicationReturn Validate(List<String> mgrLines, List<String> publicationLines ) {
+        PublicationReturn publicationReturn = new PublicationReturn();
 
         String allMgr = "";
         for (String line : mgrLines) {
@@ -58,10 +60,12 @@ public class PublicationCitationService {
         Set<Publication> publicationSet = createPublication(matchedCit);
 
         PublicationCreator publicationCreator = new PublicationCreator();
-        Set<Publication> publicationsBib = publicationCreator.createPublications(publicationLines);
+
+        PublicationAndDupl publicationAndDupl =  publicationCreator.createPublications(publicationLines);
+        Set<Publication> publicationsBib = publicationAndDupl.getPublicationSet();
         publicationSet.removeAll(publicationsBib);
 
-        publicationSet.stream().forEach(System.out::println);
+//        publicationSet.stream().forEach(System.out::println);
 
 
 
@@ -73,6 +77,8 @@ public class PublicationCitationService {
 //        }
         citations = new ArrayList<>();
         singleCit = new ArrayList<>();
+        publicationReturn.setPublications(publicationSet);
+        return  publicationReturn;
     }
 
     public static Set<Publication> createPublication(Set<String> publications) {

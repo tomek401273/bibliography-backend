@@ -1,5 +1,6 @@
 package com.tgrajkowski.controllers;
 
+import com.tgrajkowski.model.ReturnMainObject;
 import com.tgrajkowski.model.UploadStatus;
 import com.tgrajkowski.service.file.CheckFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,15 @@ public class UploadController {
     private CheckFileService checkFileService;
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
-    public UploadStatus uploadFile(@RequestParam("file")MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws Exception {
+    public ReturnMainObject uploadFile(@RequestParam("file")MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws Exception {
         System.out.println(multipartFile.getOriginalFilename());
-        String message ="null";
+        ReturnMainObject returnMainObject = new ReturnMainObject();
         try {
-            message =checkFileService.readFile(multipartFile);
+            returnMainObject = checkFileService.readFile(multipartFile);
         } catch (IOException e) {
 //            return new UploadStatus(false, "File Upload fail", e.getMessage());
         }
-        return new UploadStatus(true, message);
+//        return new UploadStatus(true, message);
+        return returnMainObject;
     }
 }

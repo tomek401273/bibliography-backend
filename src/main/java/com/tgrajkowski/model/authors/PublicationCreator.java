@@ -1,12 +1,15 @@
 package com.tgrajkowski.model.authors;
 
+import com.tgrajkowski.model.PublicationAndDupl;
+
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class PublicationCreator {
 
-    public Set<Publication> createPublications(List<String> lines) {
+    public PublicationAndDupl createPublications(List<String> lines) {
+        PublicationAndDupl publicationAndDupl = new PublicationAndDupl();
         Set<Publication> publications = new TreeSet<>();
         for (String line : lines) {
             String name = "";
@@ -42,10 +45,13 @@ public class PublicationCreator {
             } catch (NumberFormatException e) {
             }
             if (publications.contains(publication)) {
-                System.out.println("Duplicate: "+publication);
+                publicationAndDupl.getDuplicates().add(publication);
+//                System.out.println("Duplicate: "+publication);
             }
             publications.add(publication);
         }
-        return publications;
+        publicationAndDupl.setPublicationSet(publications);
+
+        return publicationAndDupl;
     }
 }

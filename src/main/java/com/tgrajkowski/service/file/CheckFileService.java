@@ -1,9 +1,12 @@
 package com.tgrajkowski.service.file;
 
 import com.tgrajkowski.model.BibliographyException;
+import com.tgrajkowski.model.ReturnMainObject;
 import com.tgrajkowski.model.UploadStatus;
+import com.tgrajkowski.model.authors.BibliographyReturn;
 import com.tgrajkowski.model.authors.Publication;
 import com.tgrajkowski.model.authors.PublicationCreator;
+import com.tgrajkowski.model.authors.PublicationReturn;
 import com.tgrajkowski.model.file.formats.FileFormats;
 import com.tgrajkowski.service.DivideFileService;
 import com.tgrajkowski.service.file.read.*;
@@ -21,9 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Service
 public class CheckFileService {
@@ -39,7 +40,8 @@ public class CheckFileService {
     @Autowired
     private BibilographyCitationService bibilographyCitationService;
 
-    public String readFile(MultipartFile multipartFile) throws IOException, BibliographyException {
+    public ReturnMainObject readFile(MultipartFile multipartFile) throws IOException, BibliographyException {
+        ReturnMainObject returnMainObject = new ReturnMainObject();
         String temp = "/home/tomek/Documents/samples2/bibliography-backend/src/main/upload/" + multipartFile.getOriginalFilename();
         long start = System.currentTimeMillis();
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -65,47 +67,40 @@ public class CheckFileService {
 
 
             ExecutorService executor = Executors.newFixedThreadPool(2);
-            Thread thread11 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("start thread1");
-                    bibilographyCitationService.validate(mgrLines, publicationLines1);
-                    System.out.println("end thread1");
-                }
-            });
-            executor.submit(thread11);
 
-            Thread thread12 = new Thread(new Runnable() {
+            Future<BibliographyReturn> bibliographyReturn1 = executor.submit(new Callable<BibliographyReturn>() {
+
                 @Override
-                public void run() {
-                    System.out.println("start thread1");
-                    bibilographyCitationService.validate(mgrLines, publicationLines2);
-                    System.out.println("end thread1");
+                public BibliographyReturn call() throws Exception {
+                    return bibilographyCitationService.validate(mgrLines, publicationLines1);
                 }
             });
-            executor.submit(thread12);
+
+
+            Future<BibliographyReturn> bibliographyReturn2 = executor.submit(new Callable<BibliographyReturn>() {
+                @Override
+                public BibliographyReturn call() throws Exception {
+                    return bibilographyCitationService.validate(mgrLines, publicationLines2);
+                }
+            });
 
 
             //////////////////////////
-            Thread thread21 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("start thread2");
-                    publicationCitationService.Validate(mgrLines1, publicationLines);
-                    System.out.println("end thread2");
-                }
-            });
-            executor.submit(thread21);
 
-            Thread thread22 = new Thread(new Runnable() {
+
+            Future<PublicationReturn> publicationReturn1= executor.submit(new Callable<PublicationReturn>() {
                 @Override
-                public void run() {
-                    System.out.println("start thread2");
-                    publicationCitationService.Validate(mgrLines2, publicationLines);
-                    System.out.println("end thread2");
+                public PublicationReturn call() throws Exception {
+                    return publicationCitationService.Validate(mgrLines1, publicationLines);
                 }
             });
-            executor.submit(thread22);
+
+            Future<PublicationReturn> publicationReturn2 =executor.submit(new Callable<PublicationReturn>() {
+                @Override
+                public PublicationReturn call() throws Exception {
+                    return publicationCitationService.Validate(mgrLines2, publicationLines);
+                }
+            });
 
             executor.shutdown();
 
@@ -114,10 +109,54 @@ public class CheckFileService {
             } catch (InterruptedException e) {
             }
 
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println("-----------------------------------------------------------------------");
+
+            BibliographyReturn bibliographyReturnMain = new BibliographyReturn();
+            try {
+                bibliographyReturnMain = bibliographyReturn1.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            try {
+                bibliographyReturnMain.getDuplicates().addAll(bibliographyReturn2.get().getDuplicates());
+                bibliographyReturnMain.setCountOfPublication(
+                        bibliographyReturnMain.getCountOfPublication()+bibliographyReturn2.get().getCountOfPublication());
+                bibliographyReturnMain.getPublicationsNotUsed().addAll(bibliographyReturn2.get().getPublicationsNotUsed());
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+
+//            System.out.println("Duplicated PublicationsMain: ");
+//            bibliographyReturnMain.getDuplicates().forEach(System.out::println);
+//            System.out.println("countOfPublication: "+bibliographyReturnMain.getCountOfPublication());
+//            System.out.println("PublicationsNotUsed");
+//            bibliographyReturnMain.getPublicationsNotUsed().forEach(System.out::println);
+//            System.out.println("=============");
+
+            returnMainObject.setBibliographyReturn(bibliographyReturnMain);
+
+            PublicationReturn publicationReturnMain = new PublicationReturn();
+            try {
+                publicationReturnMain = publicationReturn1.get();
+            } catch (InterruptedException | ExecutionException e ) {
+                e.printStackTrace();
+            }
+
+            try {
+                publicationReturnMain.getPublications().addAll(publicationReturn2.get().getPublications());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+//            System.out.println("PublicationReturnMain publication");
+//            publicationReturnMain.getPublications().forEach(System.out::println);
+
+            returnMainObject.setPublicationReturn(publicationReturnMain);
+
 
         } catch (IOException e) {
 
@@ -127,7 +166,10 @@ public class CheckFileService {
         long end = System.currentTimeMillis();
         long calculationTime = end - start;
         System.out.println("calculationTime: "+calculationTime+" [ms]");
-        return "calculationTime: "+calculationTime+" [ms]";
+//        return "calculationTime: "+calculationTime+" [ms]";
+        returnMainObject.setCalculationTime(calculationTime);
+
+        return returnMainObject;
     }
 
     public String getFileExtension(String fullFileName) throws BibliographyException {
