@@ -19,11 +19,12 @@ public class UploadController {
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public UploadStatus uploadFile(@RequestParam("file")MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws Exception {
         System.out.println(multipartFile.getOriginalFilename());
+        String message ="null";
         try {
-            checkFileService.readFile(multipartFile);
+            message =checkFileService.readFile(multipartFile);
         } catch (IOException e) {
 //            return new UploadStatus(false, "File Upload fail", e.getMessage());
         }
-        return new UploadStatus(true, "File upload success");
+        return new UploadStatus(true, message);
     }
 }

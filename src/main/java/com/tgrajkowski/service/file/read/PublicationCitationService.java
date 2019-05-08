@@ -71,6 +71,8 @@ public class PublicationCitationService {
 //            System.out.println(notMatch);
 //
 //        }
+        citations = new ArrayList<>();
+        singleCit = new ArrayList<>();
     }
 
     public static Set<Publication> createPublication(Set<String> publications) {

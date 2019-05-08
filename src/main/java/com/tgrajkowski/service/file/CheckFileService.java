@@ -7,6 +7,7 @@ import com.tgrajkowski.model.authors.PublicationCreator;
 import com.tgrajkowski.model.file.formats.FileFormats;
 import com.tgrajkowski.service.DivideFileService;
 import com.tgrajkowski.service.file.read.*;
+import org.apache.poi.xssf.model.ThemesTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +17,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CheckFileService {
@@ -34,7 +39,7 @@ public class CheckFileService {
     @Autowired
     private BibilographyCitationService bibilographyCitationService;
 
-    public void readFile(MultipartFile multipartFile) throws IOException, BibliographyException {
+    public String readFile(MultipartFile multipartFile) throws IOException, BibliographyException {
         String temp = "/home/tomek/Documents/samples2/bibliography-backend/src/main/upload/" + multipartFile.getOriginalFilename();
         long start = System.currentTimeMillis();
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -52,21 +57,67 @@ public class CheckFileService {
             List<String> publicationLines = divideFileService.getBibiographyLines(lines);
             List<String> mgrLines = divideFileService.getDiplomaLines(lines);
 
-//            Thread thread1 = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
-            bibilographyCitationService.validate(mgrLines, publicationLines);
+            List<String> mgrLines1 = new ArrayList<>(mgrLines.subList(0, (mgrLines.size())/2));
+            List<String> mgrLines2 = new ArrayList<>(mgrLines.subList((mgrLines.size())/2, mgrLines.size()));
+
+            List<String> publicationLines1 = new ArrayList<>(publicationLines.subList(0, (publicationLines.size())/2));
+            List<String> publicationLines2 = new ArrayList<>(publicationLines.subList((publicationLines.size())/2, publicationLines.size()));
 
 
+            ExecutorService executor = Executors.newFixedThreadPool(2);
+            Thread thread11 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("start thread1");
+                    bibilographyCitationService.validate(mgrLines, publicationLines1);
+                    System.out.println("end thread1");
+                }
+            });
+            executor.submit(thread11);
+
+            Thread thread12 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("start thread1");
+                    bibilographyCitationService.validate(mgrLines, publicationLines2);
+                    System.out.println("end thread1");
+                }
+            });
+            executor.submit(thread12);
+
+
+            //////////////////////////
+            Thread thread21 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("start thread2");
+                    publicationCitationService.Validate(mgrLines1, publicationLines);
+                    System.out.println("end thread2");
+                }
+            });
+            executor.submit(thread21);
+
+            Thread thread22 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("start thread2");
+                    publicationCitationService.Validate(mgrLines2, publicationLines);
+                    System.out.println("end thread2");
+                }
+            });
+            executor.submit(thread22);
+
+            executor.shutdown();
+
+            try {
+                executor.awaitTermination(1, TimeUnit.DAYS);
+            } catch (InterruptedException e) {
+            }
 
             System.out.println();
             System.out.println();
             System.out.println();
             System.out.println("-----------------------------------------------------------------------");
-            publicationCitationService.Validate(mgrLines, publicationLines);
 
         } catch (IOException e) {
 
@@ -76,6 +127,7 @@ public class CheckFileService {
         long end = System.currentTimeMillis();
         long calculationTime = end - start;
         System.out.println("calculationTime: "+calculationTime+" [ms]");
+        return "calculationTime: "+calculationTime+" [ms]";
     }
 
     public String getFileExtension(String fullFileName) throws BibliographyException {
