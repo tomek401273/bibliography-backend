@@ -29,4 +29,9 @@ public class UploadController {
 //        return new UploadStatus(true, message);
         return returnMainObject;
     }
+
+    @RequestMapping(value = "/l", method = RequestMethod.GET)
+    public String getMthod () {
+        return "Logic";
+    }
 }

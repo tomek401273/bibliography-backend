@@ -1,5 +1,6 @@
 package com.tgrajkowski.user;
 
+import com.tgrajkowski.model.job.Job;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,14 @@ public class Users {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private List<Role> roleList = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Job.class,
+            mappedBy = "users",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY
+    )
+    private List<Job> jobList = new ArrayList<>();
 
 
     public List<Role> getRoleList() {

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class JobDaoImpl {
+public class JobDaoIml {
     @PersistenceContext
     private EntityManager em;
 
@@ -16,7 +16,7 @@ public class JobDaoImpl {
 
     public List<JobDto> findPipelinedStatements() {
         Query query = em.createNativeQuery(
-                "select date_trunc('day', date), count(id) from jobs group by date_trunc('day', date)",
+                "select date_trunc('day', date), count(id) from jobs group by date_trunc('day', date) ORDER BY date_trunc('day', date) DESC",
                 STATEMENT_SQLMAP);
         return query.getResultList();
     }
