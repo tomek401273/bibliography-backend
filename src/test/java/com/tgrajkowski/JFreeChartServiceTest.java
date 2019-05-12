@@ -20,7 +20,7 @@ public class JFreeChartServiceTest {
     @Test
     public void test1() {
 //        jFreeChartService.createChart2();
-        jFreeChartServiceTime.create("sdf");
+        jFreeChartServiceTime.create();
     }
 
 }
