@@ -9,18 +9,17 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
-public class PublicationCitationServiceImpl extends PublicationCitationService{
+public class PublicationCitationServiceImpl extends PublicationCitationService {
 
     @Override
     String joinMgrLines(List<String> mgrLines) {
-        StringJoiner joiner = new StringJoiner(" ");
-        mgrLines.forEach(joiner::add);
-        return joiner.toString();
+      return String.join(" ", mgrLines);
     }
 
+    @Override
     public Set<String> createMatchedCit(List<String> singleCit) {
         Set<String> matchedCit = new TreeSet<>();
-        for (String cit : singleCit) {
+        singleCit.forEach(cit->{
             for (String regex : PublicationCitationReqex.regexList) {
                 Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CHARACTER_CLASS);
                 Matcher matcher = pattern.matcher(cit);
@@ -29,10 +28,11 @@ public class PublicationCitationServiceImpl extends PublicationCitationService{
                     break;
                 }
             }
-        }
+        });
         return matchedCit;
     }
 
+    @Override
     public Set<Publication> createPublication(Set<String> publications) {
         Set<Publication> publicationsPub = new TreeSet<>();
         for (String pub : publications) {
@@ -42,40 +42,46 @@ public class PublicationCitationServiceImpl extends PublicationCitationService{
             } else {
                 endIndexName = pub.lastIndexOf(" ");
             }
-            String name = pub.substring(0, endIndexName);
-
-            int indexFirstPubYear = pub.lastIndexOf(" ");
-            int publicationYear = 0;
             try {
-                publicationYear = Integer.parseInt(pub.substring(indexFirstPubYear).trim());
-            } catch (NumberFormatException e) {e.printStackTrace();}
-            Publication publication = new Publication(name, publicationYear);
-            publicationsPub.add(publication);
+                int publicationYear = Integer.parseInt(pub.substring(pub.lastIndexOf(" ")).trim());
+                publicationsPub.add(new Publication(pub.substring(0, endIndexName), publicationYear));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
         return publicationsPub;
     }
 
-
+    @Override
     public List<String> recursiveRemoveMultipleCitationFromOneBracketsCit(String multipleCit, List<String> singleCitTest) {
-        if (!multipleCit.contains(",")) singleCitTest.add(multipleCit);
-        else {
+        if (multipleCit.contains(",")) {
             String toBeRepkacement = multipleCit.substring(multipleCit.lastIndexOf(","));
             multipleCit = multipleCit.replace(toBeRepkacement, "");
             toBeRepkacement = toBeRepkacement.replace(", ", "");
             singleCitTest.add(toBeRepkacement);
             recursiveRemoveMultipleCitationFromOneBracketsCit(multipleCit, singleCitTest);
-        }
+        } else singleCitTest.add(multipleCit);
         return singleCitTest;
     }
 
+
+    @Override
+    public List<String> remioveBrackets(List<String> newStringList) {
+        return newStringList.stream()
+                .map(s -> s.replace("(", ""))
+                .map(s -> s.replace(")", ""))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<String> recursiveRemoving(String mgr, List<String> citationsLoc) {
-        if (mgr.contains("(")){
+        if (mgr.contains("(")) {
             String toBeReplaced = mgr.substring(mgr.indexOf("("), mgr.indexOf(")") + 1);
             if (toBeReplaced.matches("\\([0-9\\)]+\\)")) {
                 String regexBeforeBrackets = "\\w+\\s[i]\\s[i][n][.]\\s[(]|\\w+\\s[(]|\\w+\\s[i]\\s\\w+\\s[(]";
                 Matcher matcher = Pattern.compile(regexBeforeBrackets, Pattern.UNICODE_CHARACTER_CLASS).matcher(mgr);
                 if (matcher.find()) {
-                    String name = mgr.substring( matcher.start(), matcher.end());
+                    String name = mgr.substring(matcher.start(), matcher.end());
                     String onlyName = name.substring(0, name.indexOf(" "));
                     citationsLoc.add(onlyName + " " + toBeReplaced);
                     name = name.substring(0, name.length() - 1);
@@ -90,10 +96,4 @@ public class PublicationCitationServiceImpl extends PublicationCitationService{
         return citationsLoc;
     }
 
-    public List<String> remioveBrackets(List<String> newStringList) {
-        return newStringList.stream()
-                .map(s -> s.replace("(", ""))
-                .map(s -> s.replace(")", ""))
-                .collect(Collectors.toList());
-    }
 }
