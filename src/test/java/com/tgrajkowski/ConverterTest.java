@@ -2,6 +2,10 @@ package com.tgrajkowski;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+
 //import com.cloudmersive.client.invoker.ApiClient;
 //import com.cloudmersive.client.invoker.ApiException;
 //import com.cloudmersive.client.invoker.Configuration;
@@ -35,5 +39,18 @@ public class ConverterTest {
          int value = (int)(Math.random()* 100)+1;
          System.out.println(value);
      }
+ }
+
+ @Test
+    public void stringJoinerTest() {
+     List<String> rgbList = new ArrayList<>();
+     rgbList.add("Red");
+     rgbList.add("Green");
+     rgbList.add("Blue");
+     StringJoiner joiner = new StringJoiner("+");
+     rgbList.forEach(joiner::add);
+     System.out.println(joiner.toString());
+
+
  }
 }

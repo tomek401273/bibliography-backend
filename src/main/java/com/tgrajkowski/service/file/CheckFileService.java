@@ -2,15 +2,12 @@ package com.tgrajkowski.service.file;
 
 import com.tgrajkowski.model.BibliographyException;
 import com.tgrajkowski.model.ReturnMainObject;
-import com.tgrajkowski.model.UploadStatus;
 import com.tgrajkowski.model.authors.BibliographyReturn;
-import com.tgrajkowski.model.authors.Publication;
-import com.tgrajkowski.model.authors.PublicationCreator;
 import com.tgrajkowski.model.authors.PublicationReturn;
 import com.tgrajkowski.model.file.formats.FileFormats;
 import com.tgrajkowski.service.DivideFileService;
 import com.tgrajkowski.service.file.read.*;
-import org.apache.poi.xssf.model.ThemesTable;
+import com.tgrajkowski.service.file.read.publication.PublicationCitationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.*;
 
 @Service
@@ -35,7 +30,7 @@ public class CheckFileService {
     private DivideFileService divideFileService;
 
     @Autowired
-    private PublicationCitationService publicationCitationService;
+    private PublicationCitationServiceImpl publicationCitationServiceImpl;
 
     @Autowired
     private BibilographyCitationService bibilographyCitationService;
@@ -91,14 +86,14 @@ public class CheckFileService {
             Future<PublicationReturn> publicationReturn1= executor.submit(new Callable<PublicationReturn>() {
                 @Override
                 public PublicationReturn call() throws Exception {
-                    return publicationCitationService.Validate(mgrLines1, publicationLines);
+                    return new PublicationReturn(publicationCitationServiceImpl.validate(mgrLines1, publicationLines));
                 }
             });
 
             Future<PublicationReturn> publicationReturn2 =executor.submit(new Callable<PublicationReturn>() {
                 @Override
                 public PublicationReturn call() throws Exception {
-                    return publicationCitationService.Validate(mgrLines2, publicationLines);
+                    return new PublicationReturn(publicationCitationServiceImpl.validate(mgrLines2, publicationLines));
                 }
             });
 

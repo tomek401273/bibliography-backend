@@ -19,27 +19,22 @@ public class BibilographyCitationService {
         PublicationAndDupl publicationAndDupl = publicationCreator.createPublications(publicationLines);
         Set<Publication> publications = publicationAndDupl.getPublicationSet();
         bibliographyReturn.setDuplicates(publicationAndDupl.getDuplicates());
-//
-//        System.out.println("cumberOfPublication: "+publications.size());
+
         bibliographyReturn.setCountOfPublication(publications.size());
-//
+
         String allMgr = "";
         for (String line: mgrLines) {
             allMgr = allMgr+" "+line;
         }
-//        System.out.println("countLetters:"+allMgr.length());
         int countNotUsedPublication = 0;
         for (Publication publication: publications) {
             if (allMgr.contains(publication.getAuthorName())) {
             } else {
                 bibliographyReturn.getPublicationsNotUsed().add(publication);
-//                System.out.println(publication.toString());
                 countNotUsedPublication++;
             }
         }
 
-//        System.out.println("countNotUsedPublication: "+ countNotUsedPublication);
-//
         return bibliographyReturn;
     }
 }
