@@ -26,7 +26,7 @@ Chellapandi, P. (2010). Production and preliminary characterization of alkaline 
 Chellappan, S., Jasmin, C., Basheer, S. M., Elyas, K. K., Bhat, S. G., & Chandrasekaran, M. (2006). Production, purification and partial characterization of a novel protease from marine Engyodontium album BTMFS10 under solid state fermentation. Process Biochemistry, 41(4), 956-961.
 Chen, S. J., Cheng, C. Y., & Chen, T. L. (1998). Production of an alkaline lipase by Acinetobacter radioresistens. Journal of fermentation and bioengineering, 86(3), 308-312.
 Chi, Z., Ma, C., Wang, P., & Li, H. F. (2007). Optimization of medium and cultivation conditions for alkaline protease production by the marine yeast Aureobasidium pullulans. Bioresource Technology, 98(3), 534-538.
-Collares, R. M., Miklasevicius, L. V., Bassaco, M. M., Salau, N. P., Mazutti, M. A., Bisognin, D. A., & Terra, L. M. (2012). Optimization of enzymatic hydrolysis of cassava to obtain fermentable sugars. Journal of Zhejiang University-Science B, 13(7), 579-586.
+Collares, R. M.,  , L. V., Bassaco, M. M., Salau, N. P., Mazutti, M. A., Bisognin, D. A., & Terra, L. M. (2012). Optimization of enzymatic hydrolysis of cassava to obtain fermentable sugars. Journal of Zhejiang University-Science B, 13(7), 579-586.
 Cortez, J. M., Ellis, J., & Bishop, D. P. (2002). Using cellulases to improve the dimensional stability of cellulosic fabrics. Textile Research Journal, 72(8), 673-680.
 Dalev, P. G. (1994). Utilisation of waste feathers from poultry slaughter for production of a protein concentrate. Bioresource Technology, 48(3), 265-267.
 Davidenko, T. I. (1999). Immobilization of alkaline protease on polysaccharides of microbial origin. Pharmaceutical Chemistry Journal, 33(9), 487-489.

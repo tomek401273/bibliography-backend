@@ -8,16 +8,19 @@ import java.util.Date;
 
 
 
-@SqlResultSetMapping(name = JobDaoIml.STATEMENT_SQLMAP, classes = {
-        @ConstructorResult(targetClass = JobDto.class,
-                columns = {
 
-                        @ColumnResult(name = "date_trunc", type = Date.class),
-                        @ColumnResult(name = "count", type = Integer.class)
-                }
-        )
+
+
+@SqlResultSetMappings({
+        @SqlResultSetMapping(name = JobDaoIml.STATEMENT_SQLMAP, classes = {
+                @ConstructorResult(targetClass = JobDto.class,
+                        columns = {
+                                @ColumnResult(name = "date_trunc", type = Date.class),
+                                @ColumnResult(name = "count", type = Integer.class)
+                        }
+                )
+        })
 })
-
 
 @Entity
 @Table(name = "jobs")
