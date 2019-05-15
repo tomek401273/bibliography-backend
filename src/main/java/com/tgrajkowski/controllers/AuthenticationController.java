@@ -1,7 +1,7 @@
 package com.tgrajkowski.controllers;
 
 import com.tgrajkowski.model.newsletter.ConfirmDto;
-import com.tgrajkowski.service.AuthenticationService;
+import com.tgrajkowski.service.users.AuthenticationService;
 import com.tgrajkowski.user.ChangePassword;
 import com.tgrajkowski.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;

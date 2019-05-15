@@ -1,9 +1,9 @@
-package com.tgrajkowski.service;
+package com.tgrajkowski.service.main;
 
 import com.tgrajkowski.model.mail.Mail;
 
+import com.tgrajkowski.service.main.SimpleEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 

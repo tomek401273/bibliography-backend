@@ -1,6 +1,7 @@
-package com.tgrajkowski.service;
+package com.tgrajkowski.service.main;
 
 import com.tgrajkowski.model.mail.Mail;
+import com.tgrajkowski.service.main.MailCreatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.tgrajkowski.service;
+package com.tgrajkowski.service.users;
 
 
 import com.tgrajkowski.user.UserDao;

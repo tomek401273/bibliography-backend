@@ -1,10 +1,11 @@
-package com.tgrajkowski.service;
+package com.tgrajkowski.service.users;
 
 import com.tgrajkowski.model.mail.Mail;
 import com.tgrajkowski.model.mail.MailType;
 
 import com.tgrajkowski.model.newsletter.ConfirmDto;
 import com.tgrajkowski.model.newsletter.RandomString;
+import com.tgrajkowski.service.main.SimpleEmailService;
 import com.tgrajkowski.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
