@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/auth")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class LoginController {
 
     @RequestMapping(value = "/check", method = RequestMethod.GET)

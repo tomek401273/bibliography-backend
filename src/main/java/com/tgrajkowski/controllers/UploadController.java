@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/upload")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class UploadController {
 
     @Autowired
