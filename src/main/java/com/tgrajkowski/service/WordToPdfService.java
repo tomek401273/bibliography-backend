@@ -14,8 +14,8 @@ public class WordToPdfService {
     public ByteArrayOutputStream convertDocxToPdf(MultipartFile multipartFile) throws IOException {
         XWPFDocument document = new XWPFDocument(multipartFile.getInputStream());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        PdfOptions pdfOptions = null;
-        PdfConverter.getInstance().convert(document, byteArrayOutputStream, pdfOptions);
+        PdfOptions options = PdfOptions.create().fontEncoding("windows-1250");
+        PdfConverter.getInstance().convert(document, byteArrayOutputStream, options);
 
         return byteArrayOutputStream;
     }
