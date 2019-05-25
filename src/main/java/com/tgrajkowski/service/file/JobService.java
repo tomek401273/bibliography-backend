@@ -1,25 +1,25 @@
 package com.tgrajkowski.service.file;
 
-import com.tgrajkowski.model.job.JobDaoIml;
-import com.tgrajkowski.model.job.JobDto;
-import com.tgrajkowski.model.job.JobDtos;
+import com.tgrajkowski.model.job.JobDaoProxy;
+import com.tgrajkowski.model.job.JobDaily;
+import com.tgrajkowski.model.job.JobsDaily;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class JobService {
     @Autowired
-    private JobDaoIml jobDaoIml;
+    private JobDaoProxy jobDaoProxy;
+
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public JobDtos countJobsInEachDay() {
-        List<JobDto> jobDtoList = jobDaoIml.findPipelinedStatements();
-        List<String> dateList = jobDtoList.stream().map(jobDto -> simpleDateFormat.format(jobDto.getDate())).collect(Collectors.toList());
-        List<Integer> countList = jobDtoList.stream().map(JobDto::getCount).collect(Collectors.toList());
-        return new JobDtos(dateList, countList);
+    public JobsDaily countJobsInEachDay() {
+        List<JobDaily> jobDailyList = jobDaoProxy.getJobsForEachDay();
+        List<String> dateList = jobDailyList.stream().map(jobDaily -> simpleDateFormat.format(jobDaily.getDate())).collect(Collectors.toList());
+        List<Integer> countList = jobDailyList.stream().map(JobDaily::getCount).collect(Collectors.toList());
+        return new JobsDaily(dateList, countList);
     }
 }

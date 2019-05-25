@@ -47,10 +47,10 @@
 //    @Test
 //    public void criteiaTest1() {
 //
-//       List<JobDto> jobDtos = jobDaoIml.findPipelinedStatements();
+//       List<JobDaily> jobDtos = jobDaoIml.findPipelinedStatements();
 //        System.out.println(jobDtos.size());
 //
-//        for (JobDto jobDto : jobDtos) {
+//        for (JobDaily jobDto : jobDtos) {
 //            System.out.println(jobDto.toString());
 //        }
 //    }

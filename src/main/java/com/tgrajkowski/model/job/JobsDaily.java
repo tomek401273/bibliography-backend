@@ -8,7 +8,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
-public class JobDtos {
+public class JobsDaily {
     public List<String> dateList;
     private List<Integer> counts;
 }

@@ -4,6 +4,8 @@ import com.tgrajkowski.model.BibliographyException;
 import com.tgrajkowski.model.ReturnMainObject;
 import com.tgrajkowski.model.authors.BibliographyReturn;
 import com.tgrajkowski.model.authors.PublicationReturn;
+import com.tgrajkowski.model.job.JobDaoProxy;
+import com.tgrajkowski.model.job.JobDto;
 import com.tgrajkowski.service.file.CheckFileService;
 import com.tgrajkowski.service.file.read.BibilographyCitationService;
 import com.tgrajkowski.service.file.read.publication.PublicationCitationServiceImpl;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -28,6 +31,9 @@ public class BibliographyService {
 
     @Autowired
     private CheckFileService checkFileService;
+
+    @Autowired
+    private JobDaoProxy jobDaoProxy;
 
     public ReturnMainObject checkBibiographyCompatibility(MultipartFile multipartFile) throws BibliographyException {
         ReturnMainObject returnMainObject = new ReturnMainObject();
@@ -65,6 +71,13 @@ public class BibliographyService {
         }
         returnMainObject.setPublicationReturn(publicationReturnMain);
         returnMainObject.setCalculationTime(System.currentTimeMillis() - start);
+
+        JobDto jobDto = new JobDto();
+        jobDto.setUser("tomek");
+        jobDto.setTitle(multipartFile.getOriginalFilename());
+        jobDto.setDate(new Date());
+        jobDaoProxy.saveNewJob(jobDto);
+
         return returnMainObject;
     }
 }
