@@ -1,11 +1,10 @@
-package com.in28minutes.microservices.limitsservice;
+package com.tgrajkowski.test;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.tgrajkowski.test.bean.LimitConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.in28minutes.microservices.limitsservice.bean.LimitConfiguration;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class LimitsConfigurationController {
@@ -15,7 +14,7 @@ public class LimitsConfigurationController {
 
 	@GetMapping("/limits")
 	public LimitConfiguration retrieveLimitsFromConfigurations() {
-		LimitConfiguration limitConfiguration = new LimitConfiguration(configuration.getMaximum(), 
+		LimitConfiguration limitConfiguration = new LimitConfiguration(configuration.getMaximum(),
 				configuration.getMinimum());
 		return limitConfiguration;
 	}
