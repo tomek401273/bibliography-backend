@@ -4,8 +4,8 @@ services:
     image: tomek371240/bibl:2.1
     networks:
       - springcloud-overlay
-    ports:
-      - "9002:9002"
+#    ports:
+#      - "9002:9002"
 #    command: tail -f /dev/null
 networks:
   springcloud-overlay:
