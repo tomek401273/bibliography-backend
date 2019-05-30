@@ -32,8 +32,8 @@ public class UploadController {
     private SortingService sortingService;
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
-    public ReturnMainObject uploadFile(@RequestParam("file") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws Exception {
-        return bibliographyService.checkBibiographyCompatibility(multipartFile);
+    public ReturnMainObject uploadFile(@RequestParam("file") MultipartFile multipartFile, @RequestParam("login") String login, RedirectAttributes redirectAttributes) throws Exception {
+        return bibliographyService.checkBibiographyCompatibility(multipartFile, login);
     }
 
     @RequestMapping(value = "/docx/to/pdf", method = RequestMethod.POST)

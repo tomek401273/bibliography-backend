@@ -35,7 +35,7 @@ public class BibliographyService {
     @Autowired
     private JobDaoProxy jobDaoProxy;
 
-    public ReturnMainObject checkBibiographyCompatibility(MultipartFile multipartFile) throws BibliographyException {
+    public ReturnMainObject checkBibiographyCompatibility(MultipartFile multipartFile, String login) throws BibliographyException {
         ReturnMainObject returnMainObject = new ReturnMainObject();
         long start = System.currentTimeMillis();
         List<String> lines = checkFileService.readFile(multipartFile);
@@ -73,7 +73,7 @@ public class BibliographyService {
         returnMainObject.setCalculationTime(System.currentTimeMillis() - start);
 
         JobDto jobDto = new JobDto();
-        jobDto.setUser("tomek");
+        jobDto.setUser(login);
         jobDto.setTitle(multipartFile.getOriginalFilename());
         jobDto.setDate(new Date());
         jobDaoProxy.saveNewJob(jobDto);
