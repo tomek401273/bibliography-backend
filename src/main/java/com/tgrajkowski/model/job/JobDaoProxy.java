@@ -9,7 +9,7 @@ import java.util.List;
 
 @FeignClient("cloud-repository")
 public interface JobDaoProxy {
-    @GetMapping(value = "data/monthly/chart")
+    @GetMapping(value = "/job/data/monthly/chart")
     List<JobDaily> getJobsForEachDay();
 
     @PostMapping(value = "job/new/job")
