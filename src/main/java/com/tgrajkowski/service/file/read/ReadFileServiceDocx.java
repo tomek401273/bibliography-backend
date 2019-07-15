@@ -23,4 +23,3 @@ public class ReadFileServiceDocx implements ReadFileService{
         }
     }
 }
-// buttons main-page order-bibloiograpy report-bug support remarks opinion-reviev  invite a friend

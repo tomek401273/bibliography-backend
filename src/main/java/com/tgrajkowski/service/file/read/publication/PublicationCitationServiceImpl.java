@@ -66,7 +66,7 @@ public class PublicationCitationServiceImpl extends PublicationCitationService {
 
 
     @Override
-    public List<String> remioveBrackets(List<String> newStringList) {
+    public List<String> removeBrackets(List<String> newStringList) {
         return newStringList.stream()
                 .map(s -> s.replace("(", ""))
                 .map(s -> s.replace(")", ""))

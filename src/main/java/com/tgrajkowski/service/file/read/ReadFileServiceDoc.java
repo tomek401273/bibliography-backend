@@ -1,6 +1,7 @@
 package com.tgrajkowski.service.file.read;
 
 import com.tgrajkowski.model.BibliographyException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
-
+@Service
 public class ReadFileServiceDoc implements ReadFileService {
     @Override
     public List<String> readFile(MultipartFile multipartFile) throws BibliographyException {

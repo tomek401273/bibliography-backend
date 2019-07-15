@@ -11,12 +11,12 @@ public abstract class PublicationCitationService {
     abstract Set<Publication> createPublication(Set<String> publications);
     abstract List<String> recursiveRemoveMultipleCitationFromOneBracketsCit(String multipleCit, List<String> singleCitTest);
     abstract List<String> recursiveRemoving(String mgr, List<String> citationsLoc);
-    abstract List<String> remioveBrackets(List<String> newStringList);
+    abstract List<String> removeBrackets(List<String> newStringList);
 
     public Set<Publication> validate(List<String> mgrLines, List<String> publicationLines ) {
         String allMgr = joinMgrLines(mgrLines);
         List<String> citations = recursiveRemoving(allMgr, new ArrayList<>());
-        citations = remioveBrackets(citations);
+        citations = removeBrackets(citations);
         List<String> singleCit = new ArrayList<>();
         citations.forEach(s -> singleCit.addAll(recursiveRemoveMultipleCitationFromOneBracketsCit(s,  new ArrayList<>())));
 
