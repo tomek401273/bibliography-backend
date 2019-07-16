@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ReadFactoryTest {
@@ -16,38 +17,23 @@ public class ReadFactoryTest {
     private ReadFactory readFactory;
 
     @Test
-    public void createReadFileServiceTxt() {
+    public void createReadFileServiceTxt() throws BibliographyException {
         ReadFileService readFileService = null;
+        readFileService = readFactory.createReadFileService("txt");
 
-        try {
-           readFileService= readFactory.createReadFileService("txt");
-        } catch (BibliographyException e) {
-            System.out.println(e.getMessage());
-        }
         Assert.assertEquals(new ReadFileServiceTxt().getClass(), readFileService.getClass());
     }
 
     @Test
-    public void createReadFileServiceDoc() {
+    public void createReadFileServiceDoc() throws BibliographyException {
         ReadFileService readFileService = null;
-
-        try {
-           readFileService= readFactory.createReadFileService("doc");
-        } catch (BibliographyException e) {
-            System.out.println(e.getMessage());
-        }
+        readFileService = readFactory.createReadFileService("doc");
         Assert.assertEquals(new ReadFileServiceDoc().getClass(), readFileService.getClass());
     }
 
     @Test
-    public void createReadFileServiceDocx() {
-        ReadFileService readFileService = null;
-
-        try {
-            readFileService= readFactory.createReadFileService("docx");
-        } catch (BibliographyException e) {
-            System.out.println(e.getMessage());
-        }
+    public void createReadFileServiceDocx() throws BibliographyException {
+        ReadFileService readFileService =  readFactory.createReadFileService("docx");
         Assert.assertEquals(new ReadFileServiceDocx().getClass(), readFileService.getClass());
     }
 }

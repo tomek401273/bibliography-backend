@@ -1,11 +1,11 @@
 package com.tgrajkowski.controllers;
 
+import com.tgrajkowski.model.job.JobDto;
 import com.tgrajkowski.model.job.JobsDaily;
 import com.tgrajkowski.model.job.JobsForDay;
 import com.tgrajkowski.service.file.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +24,10 @@ public class JobController {
     @RequestMapping(value = "/count/for/each/day2")
     public List<JobsForDay> countJobsInEachDay2() {
         return jobService.countJobsInEachDay2();
+    }
+
+    @RequestMapping(value = "/save/new", method = RequestMethod.POST)
+    public JobDto saveNewJobDto(@RequestParam String login, @RequestParam String fileName){
+        return jobService.saveNewJob(login, fileName);
     }
 }

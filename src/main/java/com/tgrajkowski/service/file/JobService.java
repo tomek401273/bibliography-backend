@@ -1,14 +1,12 @@
 package com.tgrajkowski.service.file;
 
-import com.tgrajkowski.model.job.JobDaoProxy;
-import com.tgrajkowski.model.job.JobDaily;
-import com.tgrajkowski.model.job.JobsDaily;
-import com.tgrajkowski.model.job.JobsForDay;
+import com.tgrajkowski.model.job.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,5 +29,14 @@ public class JobService {
         return jobDailyList.stream()
                 .map(jobDaily -> new JobsForDay(jobDaily.getDate().getTime(), jobDaily.getCount()))
                 .collect(Collectors.toList());
+    }
+
+
+    public JobDto saveNewJob(String login, String fileName) {
+        JobDto jobDto = new JobDto();
+        jobDto.setUser(login);
+        jobDto.setTitle(fileName);
+        jobDto.setDate(new Date());
+        return jobDaoProxy.saveNewJob(jobDto);
     }
 }

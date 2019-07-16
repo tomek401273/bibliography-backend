@@ -32,8 +32,8 @@ public class BibliographyService {
     @Autowired
     private CheckFileService checkFileService;
 
-    @Autowired
-    private JobDaoProxy jobDaoProxy;
+//    @Autowired
+//    private JobDaoProxy jobDaoProxy;
 
     public ReturnMainObject checkBibiographyCompatibility(MultipartFile multipartFile, String login) throws BibliographyException {
         ReturnMainObject returnMainObject = new ReturnMainObject();
@@ -72,11 +72,11 @@ public class BibliographyService {
         returnMainObject.setPublicationReturn(publicationReturnMain);
         returnMainObject.setCalculationTime(System.currentTimeMillis() - start);
 
-        JobDto jobDto = new JobDto();
-        jobDto.setUser(login);
-        jobDto.setTitle(multipartFile.getOriginalFilename());
-        jobDto.setDate(new Date());
-        jobDaoProxy.saveNewJob(jobDto);
+//        JobDto jobDto = new JobDto();
+//        jobDto.setUser(login);
+//        jobDto.setTitle(multipartFile.getOriginalFilename());
+//        jobDto.setDate(new Date());
+//        jobDaoProxy.saveNewJob(jobDto);
 
         return returnMainObject;
     }

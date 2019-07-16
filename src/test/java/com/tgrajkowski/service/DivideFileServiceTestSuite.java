@@ -1,4 +1,4 @@
-package com.tgrajkowski.tests;
+package com.tgrajkowski.service;
 
 import com.tgrajkowski.service.DivideFileService;
 import org.junit.Assert;

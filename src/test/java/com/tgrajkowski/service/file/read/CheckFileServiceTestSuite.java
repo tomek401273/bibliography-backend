@@ -1,5 +1,6 @@
-package com.tgrajkowski.tests;
+package com.tgrajkowski.service.file.read;
 
+import com.tgrajkowski.MultipartFilesForTests;
 import com.tgrajkowski.model.BibliographyException;
 import com.tgrajkowski.service.file.CheckFileService;
 import org.junit.Assert;
@@ -7,15 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -25,19 +20,10 @@ public class CheckFileServiceTestSuite {
     private CheckFileService checkFileService;
 
     @Test
-    public void readFile() {
-        byte[] content = null;
-        try {content = Files.readAllBytes(Paths.get("/home/tomek/Documents/samples2/bibliography-backend/all.txt")); } catch (final IOException e) { }
-        MultipartFile result = new MockMultipartFile("file.txt", "file.txt",
-                "text/plain",
-                content);
-        List<String> lines = new ArrayList<>();
-        try {
-            lines = checkFileService.readFile(result);
-        } catch (BibliographyException e) {
-        }
-
-        Assert.assertEquals(315, lines.size());
+    public void readFile() throws BibliographyException {
+        MultipartFile result = MultipartFilesForTests.txt();
+        List<String> lines = checkFileService.readFile(result);
+        Assert.assertEquals(314, lines.size());
         Assert.assertEquals("I.\tWstęp", lines.get(0));
     }
 
@@ -64,13 +50,8 @@ public class CheckFileServiceTestSuite {
     }
 
     @Test
-    public void canFileBeProcessedOk() {
-        boolean isOk = false;
-        try {
-            isOk = checkFileService.canFileBeProcessed("txt");
-        } catch (BibliographyException e) {
-            e.printStackTrace();
-        }
+    public void canFileBeProcessedOk() throws BibliographyException {
+        boolean isOk = checkFileService.canFileBeProcessed("txt");
         Assert.assertEquals(true, isOk);
     }
 
