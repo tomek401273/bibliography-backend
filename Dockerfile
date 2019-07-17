@@ -22,7 +22,7 @@ RUN dpkg-reconfigure --frontend noninteractive locales
 #COPY . .
 ##COPY ./m2 /root/.m2
 #RUN mvn clean
-RUN mvn install
+#RUN mvn install
 CMD ["tail", "-f", "/dev/null"]
 #CMD ["mvn", "spring-boot:run"]
 
