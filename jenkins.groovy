@@ -2,10 +2,6 @@ node ('master') {
     stage('pull') {
         git 'https://github.com/tomek401273/bibliography-backend.git'
     }
-    stage('package-bib') {
-        sh script: 'mvn clean'
-        sh script: 'mvn package'
-    }
     stage('docker') {
         sh script: 'docker build -t tomek371240/bibl:2.2 .'
     }
