@@ -26,10 +26,6 @@ public class PublicationCreator {
 
             int pubStart = line.indexOf("(");
             int pubStop = line.indexOf(")");
-//            System.out.println(line);
-//            System.out.println(pubStart);
-//            System.out.println(pubStop);
-
             String publishYear = "";
             try {
                 publishYear = line.substring(pubStart+1, pubStop);

@@ -39,8 +39,6 @@ public class SortingService {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(byteArrayOutputStream);
-        printWriter.println("Zażółć gęślą jaźń");
-        System.out.println("Zażółć gęślą jaźń");
         for (String s: publicationLines) {
             printWriter.println(s);
         }

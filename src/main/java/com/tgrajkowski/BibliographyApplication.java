@@ -14,11 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableHystrix
 @SpringBootApplication
 public class BibliographyApplication {
-    @Value("${info.company.name}")
-    private static String myString;
-
     public static void main(String[] args) {
-        System.out.println("checkoing is it really working...: "+myString);
         SpringApplication.run(BibliographyApplication.class, args);
     }
     @Bean
@@ -26,4 +22,3 @@ public class BibliographyApplication {
         return Sampler.ALWAYS_SAMPLE;
     }
 }
-
