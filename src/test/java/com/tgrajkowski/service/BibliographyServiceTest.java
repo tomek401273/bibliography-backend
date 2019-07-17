@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 public class BibliographyServiceTest {
     @Autowired
     private BibliographyService bibliographyService;
@@ -27,8 +29,10 @@ public class BibliographyServiceTest {
         // Given
         MultipartFile file = MultipartFilesForTests.txt();
         String login = "tomek";
+        //When
         ReturnMainObject returnMainObject = bibliographyService.checkBibiographyCompatibility(file, login);
         System.out.println(returnMainObject.toString());
+        // Then
         Assert.assertEquals(new ArrayList<>(returnMainObject.getBibliographyReturn().getDuplicates()).get(0), new Publication("Zanphorlin", 2010));
         Assert.assertEquals(157, returnMainObject.getBibliographyReturn().getCountOfPublication());
         assertTrue(returnMainObject.getBibliographyReturn().getPublicationsNotUsed().contains(new Publication("Zan1", 2077)));
